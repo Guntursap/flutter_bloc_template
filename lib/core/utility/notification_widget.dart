@@ -1,11 +1,10 @@
 // lib/core/utility/notification_widget.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc_template/main.dart'
-    show scaffoldMessengerKey;
+// ponytail: context messenger breaks main.dart import cycle; upgrade to GlobalKey only if context unavailable.
 
-void showAppMessage(String message, {bool isError = false}) {
-  scaffoldMessengerKey.currentState
-    ?..hideCurrentSnackBar()
+void showAppMessage(BuildContext context, String message, {bool isError = false}) {
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
     ..showSnackBar(
       SnackBar(
         content: Text(message),
