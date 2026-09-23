@@ -1,17 +1,22 @@
 # flutter_bloc_template
 
-A new Flutter project.
+Template Flutter + `flutter_bloc`, pola dari `driver_tulus_app` GGN.
+API contoh: [DummyJSON](https://dummyjson.com) (gratis, tanpa key).
 
-## Getting Started
+## Run
 
-This project is a starting point for a Flutter application.
+```bash
+flutter pub get
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
+Login demo: `emilys` / `emilyspass`.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Struktur
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+`lib/core` (constants/theme/utility) · `lib/data/{auth,items}` (bloc/model/repository)
+· `lib/page` (splash/login/home/detail + widget).
+
+## Tambah fitur baru
+
+Copy folder `lib/data/items` → rename. Daftarkan route di `createRoute()` (`lib/main.dart`).
