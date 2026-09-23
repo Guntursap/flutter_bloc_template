@@ -14,7 +14,9 @@ class VerifyRepo {
     final token = (await LoginRepo.getAuthData())?.token;
     if (token == null) {
       return const VerifyModel(
-          status: 'failed', errorMessage: 'Token tidak ditemukan');
+          status: 'failed',
+          errorMessage: 'Token tidak ditemukan',
+          isAuthError: true);
     }
     try {
       final res = await client.get(
@@ -31,7 +33,9 @@ class VerifyRepo {
           ? json.decode(res.body)['message']?.toString()
           : null;
       return VerifyModel(
-          status: 'failed', errorMessage: msg ?? 'Sesi berakhir. Login lagi.');
+          status: 'failed',
+          errorMessage: msg ?? 'Sesi berakhir. Login lagi.',
+          isAuthError: res.statusCode == 401 || res.statusCode == 403);
     } on SocketException {
       return const VerifyModel(
           status: 'failed',

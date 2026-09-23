@@ -22,7 +22,7 @@ class VerifyBloc extends Bloc<VerifyEvent, VerifyState> {
     try {
       final VerifyModel data = await repo.verify();
       if (data.status == 'failed') {
-        await LoginRepo.clearAuthData();
+        if (data.isAuthError) await LoginRepo.clearAuthData();
         emit(VerifyFailure(data.errorMessage ?? 'Sesi berakhir'));
       } else {
         emit(VerifySuccess());

@@ -6,6 +6,7 @@ import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_bloc_template/data/auth/bloc/login/login_bloc.dart';
 import 'package:flutter_bloc_template/data/auth/bloc/verify/verify_bloc.dart';
+import 'package:flutter_bloc_template/data/auth/model/auth_model.dart';
 import 'package:flutter_bloc_template/data/auth/repository/login_repository.dart';
 import 'package:flutter_bloc_template/data/auth/repository/verify_repository.dart';
 
@@ -65,6 +66,20 @@ void main() {
     bloc.add(LogoutRequested());
     await expectLater(bloc.stream,
         emitsInOrder([isA<LogoutLoading>(), isA<LogoutSuccess>()]));
+    expect(await LoginRepo.getAuthData(), isNull);
+    await bloc.close();
+  });
+
+  test('VerifyBloc: 401 → Failure + token dihapus', () async {
+    await LoginRepo.saveAuthData(
+        const LoginModel(status: 'ok', token: 'stale'));
+    final bloc = VerifyBloc(
+        repo: VerifyRepo(
+            client: MockClient((_) async => http.Response(
+                json.encode({'message': 'Token expired'}), 401))));
+    bloc.add(VerifyRequested());
+    await expectLater(bloc.stream,
+        emitsInOrder([isA<VerifyLoading>(), isA<VerifyFailure>()]));
     expect(await LoginRepo.getAuthData(), isNull);
     await bloc.close();
   });

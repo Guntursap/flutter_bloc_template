@@ -82,6 +82,8 @@ class LoginModel {
 class VerifyModel {
   final String status;
   final String? errorMessage;
+  final bool isAuthError;
 
-  const VerifyModel({required this.status, this.errorMessage});
+  const VerifyModel(
+      {required this.status, this.errorMessage, this.isAuthError = false});
 }
